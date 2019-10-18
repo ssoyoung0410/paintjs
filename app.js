@@ -1,5 +1,7 @@
 const canvas = document.getElementById('jsCanvas');
 const ctx = canvas.getContext('2d');
+const colors = document.getElementsByClassName('jsColor');
+
 
 canvas.width = 700;
 canvas.height = 700;
@@ -30,10 +32,10 @@ function MouseMove(event) {
   }
 }
 
-function MouseDown(event) {
-  painting = true;
+function colorClick(event) {
+  const bgColor = event.target.style.backgroundColor; //내가 클릭한 그것의 CSS스타일
+  ctx.strokeStyle = bgColor;
 }
-
 
 if(canvas) {
   canvas.addEventListener('mousemove',MouseMove);
@@ -41,3 +43,37 @@ if(canvas) {
   canvas.addEventListener('mouseup',stopPainting);
   canvas.addEventListener('mouseleave',stopPainting);
 }
+
+Array.from(colors).forEach(color =>
+  color.addEventListener('click',colorClick));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//
