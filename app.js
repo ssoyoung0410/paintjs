@@ -3,12 +3,18 @@ const ctx = canvas.getContext('2d');
 const colors = document.getElementsByClassName('jsColor');
 const range = document.getElementById('jsRange');
 const mode = document.getElementById('jsMode');
+const save = document.getElementById('jsSave');
 
+const INITIAL_COLOR = "#2c2c2c";
+const CANVAS_SIZE = 700;
 
-canvas.width = 700;
-canvas.height = 700;
+canvas.width = CANVAS_SIZE;
+canvas.height = CANVAS_SIZE;
 
-ctx.strokeStyle ="#2c2c2c";
+ctx.fillStyle = "white";
+ctx.fillRect(0,0,CANVAS_SIZE,CANVAS_SIZE);
+ctx.strokeStyle = INITIAL_COLOR;
+ctx.fillStyle = INITIAL_COLOR;
 ctx.lineWidth = 2.5;
 
 let painting = false;
@@ -38,6 +44,7 @@ function mouseMove(event) {
 function colorClick(event) {
   const bgColor = event.target.style.backgroundColor; //내가 클릭한 그것의 CSS스타일
   ctx.strokeStyle = bgColor;
+  ctx.fillStyle = bgColor;
 };
 
 function rangeChange(evnet) {
@@ -51,23 +58,32 @@ function modeClick() {
      mode.innerText = 'FILL'
    } else {
      filling = true;
-     mode.innerText = 'paint'
+     mode.innerText = 'paint';
+
    }
-
-
-
-  // if(mode.innerHTML === 'FILL') {
-  //    mode.innerHTML = 'paint';
-  // } else {
-  //   mode.innerHTML = 'FILL'
-  // }
 };
+
+function canvasClick () {
+  if(filling){
+    ctx.fillRect(0,0,CANVAS_SIZE,CANVAS_SIZE);
+  }
+  //ctx.fillRect(0,0,CANVAS_SIZE,CANVAS_SIZE);
+}
+
+function saveClick () {
+  const image = canvas.toDataURL();
+  const link = document.createElement('a');
+  link.href = image;
+  link.download = 'painImage';
+  link.click();
+}
 
 if(canvas) {
   canvas.addEventListener('mousemove',mouseMove);
   canvas.addEventListener('mousedown',startPainting);  //mousedown:클릭시 발생하는 이벤트
   canvas.addEventListener('mouseup',stopPainting);
   canvas.addEventListener('mouseleave',stopPainting);
+  canvas.addEventListener('click',canvasClick);
 };
 
 Array.from(colors).forEach(color =>
@@ -79,10 +95,12 @@ if(range) {
 };
 
 if(mode) {
-  mode.addEventListener('click',modeClick)
+  mode.addEventListener('click',modeClick);
 };
 
-
+if(save) {
+  save.addEventListener('click',saveClick);
+}
 
 
 
